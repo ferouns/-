@@ -1,0 +1,106 @@
+msg_0 = "Enter an equation"
+msg_1 = "Do you even know what numbers are? Stay focused!"
+msg_2 = "Yes ... an interesting math operation. You've slept through all classes, haven't you?"
+msg_3 = "Yeah... division by zero. Smart move..."
+msg_4 = "Do you want to store the result? (y / n):"
+msg_5 = "Do you want to continue calculations? (y / n):"
+msg_6 = " ... lazy"
+msg_7 = " ... very lazy"
+msg_8 = " ... very, very lazy"
+msg_9 = "You are"
+msg_10 = "Are you sure? It's just a number (y / n)"
+msg_11 = 'This is the last chance. Are you sure about this?(y / n)'
+
+library = {10: msg_10, 11: msg_11}
+
+memory = 0.0
+number = True
+
+def is_one_digit(v):
+    if -10.0 < v < 10.0 and v.is_integer():
+        output = True
+    else:
+        output = False
+    return output
+
+
+def check(v1, v2, v3):
+    msg = ""
+    if is_one_digit(v1) and is_one_digit(v2):
+        msg = msg + msg_6
+    if v1 == 1.0 or v2 == 1.0:
+        if v3 == '*':
+            msg = msg + msg_7
+    if v1 == 0.0 or v2 == 0.0:
+        if v3 == '*' or v3 == '+' or v3 == '-':
+            msg = msg + msg_8
+    if msg != "":
+        msg = msg_9 + msg
+        print(msg)
+
+
+while number:
+    reading = True
+    while reading:
+        print(msg_0)
+        x, oper, y = input().split()
+        if x == 'M':
+            x = memory
+        if y == 'M':
+            y = memory
+        try:
+            a = float(x)
+            b = float(y)
+        except:
+            print(msg_1)
+
+        check(a, b, oper)
+
+        if oper == '+':
+            result = a + b
+            reading = False
+        elif oper == '-':
+            result = a - b
+            reading = False
+        elif oper == '*':
+            result = a * b
+            reading = False
+        elif oper == '/':
+            b = float(y)
+            if b != 0.0:
+                result = a / b
+                reading = False
+            else:
+                print(msg_3)
+        else:
+            print(msg_2)
+    print(result)
+    reading = True
+    while reading:
+        print(msg_4)
+        c = input()
+        if c in 'yn':
+            if c == 'y':
+                if is_one_digit(result):
+                    msg_index = 10
+                    Index = True
+                    while Index:
+                        print(library[msg_index])
+                        f = input()
+                        if f == 'y':
+                            if msg_index < 11:
+                                msg_index += 1
+                            else:
+                                memory = result
+                                Index = False
+                else:
+                    memory = result
+            reading = False
+    reading = True
+    while reading:
+        print(msg_5)
+        d = input()
+        if d in 'yn':
+            if d == 'n':
+                number = False
+            reading = False
